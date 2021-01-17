@@ -24,7 +24,7 @@ Route::group(['prefix'=>'auth'],function (){
     Route::post('register',[RegisterController::class,'index']);
     Route::post('login',[LoginController::class,'index']);
     Route::get('logout',[LoginController::class,'logout'])->middleware('auth:api');
-    Route::middleware('auth:api')->get('/user', function () {
+    Route::middleware(['auth:api','emailIsVerified'])->get('/user', function () {
         return auth()->user();
     });
 });
