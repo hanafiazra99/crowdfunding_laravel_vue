@@ -38,8 +38,9 @@ class RegisterController extends Controller
 
     public function checkotp(Request $request){
         $otp = OtpCode::where('otp_code',$request->otp_code)->where('valid_until','<',time())->first();
-
+        $user = $otp->user;
         if($otp){
+            $user->update(['email_verified_at',time()]);
             return response()->json(['message'=>'otp anda tepat']);
         }else{
             return response()->json(['message'=>'otp anda kadaluarsa']);
