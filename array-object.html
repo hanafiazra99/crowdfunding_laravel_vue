@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Mengambil data dari array</title>
+</head>
+<body>
+    <script>
+        // membuat array
+        var daftarBuah = ["2. Apel", "5. Jeruk", "3. Anggur", "4. Semangka", "1. Mangga"];
+
+        // mengambil radio
+        document.write("<a>Soal 1 </a><br><br>");
+        document.write(daftarBuah.sort().join("<br>"));
+        document.write("<br><br><a>Soal 2 </a><br><br>");
+        
+        var kalimat="saya sangat senang belajar javascript"
+        var splited = kalimat.split(" ");
+        document.write("[");
+        document.write(splited);
+        document.write("]");
+
+        var fruits = [
+            {
+                nama: "strawberry",
+                warna: "merah",
+                bijinya: "tidak",
+                harga: 9000,
+            },
+            {
+                nama: "jeruk",
+                warna: "oranye",
+                bijinya: "ada",
+                harga: "8000",
+            },
+            {
+                nama: "Semangka",
+                warna: "Hijau & Merah",
+                bijinya: "ada",
+                harga: 10000,
+            },
+            {
+                nama: "Pisang",
+                warna: "Kuning",
+                bijinya: "tidak",
+                harga: 5000,
+            }
+        ]
+        document.write("<br><br><a>Soal 3 </a><br><br>");
+        document.write(fruits[0].nama,"<br>",fruits[0].warna,"<br>",fruits[0].bijinya,"<br>",fruits[0].harga);
+    </script>
+</body>
+</html>
