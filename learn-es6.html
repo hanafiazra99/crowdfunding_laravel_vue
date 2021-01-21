@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Mengambil data dari array</title>
+</head>
+<body>
+    <script>
+        let bob = () => console.log("this is golden!!");
+        bob()
+
+
+        let Literal = {
+            fullName(firstName,lastName){
+                console.log(`${firstName} ${lastName}`)
+            }
+        }
+        Literal.fullName('Hanafi','Azra');
+
+
+        let newObject = {
+            firstName: "Harry",
+            lastName: "Potter Holt",
+            destination: "Hogwarts React Conf",
+            occupation: "Deve-wizard Avocado",
+            spell: "Vimulus Renderus!!!"
+        };
+        
+        const { firstName, lastName,destination,occupation,spell } = newObject;
+        
+        console.log(`Firstname : ${firstName} Lastname : ${lastName} Destination : ${destination} Occupation : ${occupation} Spell : ${spell}`); // Peter
+         
+
+        const west = ["Will", "Chris", "Sam", "Holly"];
+        const east = ["Gill", "Brian", "Noel", "Maggie"];
+        const combined = [...east, ...west];
+        console.log(combined)
+
+
+        const planet = "earth" 
+        const view = "glass" 
+        var before = 'Lorem ' + view + 'dolor sit amet, ' +       'consectetur adipiscing elit,' + planet + 'do eiusmod tempor ' +     'incididunt ut labore et dolore magna aliqua. Ut enim' +     ' ad minim veniam'   // Driver Code console.log(before) 
+        var after = `Lorem ${view} dolor sit amet, consectetur adipiscing elit, ${planet} do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam`
+        console.log(before);
+        console.log(after);
+
+    </script>
+</body>
+</html>
