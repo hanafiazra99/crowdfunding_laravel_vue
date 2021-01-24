@@ -8,6 +8,9 @@
   </head>
   <body>
     <div id="app">
+        
+        <input type="text" v-model="nama">
+        <button v-on:click.prevent="tambah(nama)" >tambah</button>
         <li v-for="(user,index) in users">
             {{ user.name }}
             <button v-on:click.prevent="curForm='updateform'">edit</button>
@@ -20,17 +23,11 @@
 
     </div>
     <template id="inputt">
-      <div>
-      <input type="text" v-model="nama">
-      <button v-on:click.prevent="tambah(nama)" >tambah</button>
-      </div>
+      
     </template>
 
     <template id="updatee">
-    <div>
-        <input type="text">
-        <button>update</button>
-    </div>
+    
     </template>
     <script>
       Vue.component('inputform',{
