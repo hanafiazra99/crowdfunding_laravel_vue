@@ -8,22 +8,42 @@
   </head>
   <body>
     <div id="app">
-      <input type="text" />
-      <button>tambah</button>
+        <li v-for="(user,index) in users">
+            {{ user.name }}
+            <button v-on:click.prevent="curForm='updateform'">edit</button>
+            <button v-on:click.prevent="hapus(index)">hapus</button>
+        </li>
+      <component :is="curForm">
       
-      <li v-for="(user,index) in users">
-        {{ user.name }}
-        {{ index }}
-        
-        
-        <button v-on:click="delete(index)">hapus</button>
-      </li>
+      
+      
 
     </div>
+    <template id="inputt">
+      <div>
+      <input type="text" v-model="nama">
+      <button v-on:click.prevent="tambah(nama)" >tambah</button>
+      </div>
+    </template>
+
+    <template id="updatee">
+    <div>
+        <input type="text">
+        <button>update</button>
+    </div>
+    </template>
     <script>
+      Vue.component('inputform',{
+          template:'#inputt'
+      });
+      Vue.component('updateform',{
+          template:'#updatee'
+      });
       const App = new Vue({
         el: '#app',
         data: {
+            curForm:"inputform",
+            nama:'',
             users:[
                 {
                     name:'Hanafi Azra'
@@ -37,8 +57,11 @@
             ]
         },
         methods:{
-            delete:function(index){
+            hapus: function(index){
                 this.users.splice(index,1)
+            },
+            tambah:function(nama){
+                this.users.push({name:nama})
             }
         }
       })
