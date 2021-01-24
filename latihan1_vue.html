@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue App</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+        
+        <textarea v-on:keyup.13="tambah(nama)" v-model="nama"></textarea>
+
+        <li v-for="(user,index) in users">
+            <button @click="tambahvote(user)">+</button>
+            {{ user.name }} || {{ user.date }} || {{ user.vote }}
+            <button @click="kurangvote(user)">-</button>
+        </li>
+     
+      
+      
+      
+
+    </div>
+    
+
+    <script>
+      var date = new Date();
+      Vue.component('inputform',{
+          template:'#inputt'
+      });
+      Vue.component('updateform',{
+          template:'#updatee'
+      });
+      const App = new Vue({
+        el: '#app',
+        data: {
+            
+            nama:'',
+            users:[
+                {
+                    name:'Hanafi Azra',
+                    vote:5,
+                    date:'2020-01-01'
+                },
+                {
+                    name:'Kevin',
+                    vote:5,
+                    date:'2020-01-01'
+                },
+                {
+                    name:'Agus',
+                    vote:5,
+                    date:'2020-01-01'
+                }
+            ]
+        },
+        methods:{
+            hapus: function(index){
+                this.users.splice(index,1)
+            },
+            tambah:function(nama){
+                this.users.push({name:nama,vote:0,date:date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()})
+            },
+            tambahvote:function(user){
+                ++user.vote;
+            },
+            kurangvote:function(user){
+                --user.vote;
+            }
+        }
+      })
+    </script>
+  </body>
+</html>
