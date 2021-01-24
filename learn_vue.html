@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue App</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <input type="text" />
+      <button>tambah</button>
+      
+      <li v-for="(user,index) in users">
+        {{ user.name }}
+        {{ index }}
+        
+        
+        <button v-on:click="delete(index)">hapus</button>
+      </li>
+
+    </div>
+    <script>
+      const App = new Vue({
+        el: '#app',
+        data: {
+            users:[
+                {
+                    name:'Hanafi Azra'
+                },
+                {
+                    name:'Kevin'
+                },
+                {
+                    name:'Agus'
+                }
+            ]
+        },
+        methods:{
+            delete:function(index){
+                this.users.splice(index,1)
+            }
+        }
+      })
+    </script>
+  </body>
+</html>
