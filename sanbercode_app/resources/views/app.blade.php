@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="app">
-        <example-component></example-component>
+        <app></app>
     </div>
     <script src="{{ url('/js/app.js') }}"></script>
 </body>

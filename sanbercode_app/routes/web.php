@@ -15,29 +15,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Auth::routes();
-Route::get('unverified_email', function () {
-    return view('error.unverified_email');
-})->name('unverified_email');
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('/', function () {
-        return view('welcome');
-    });
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-});
-Route::group(['middleware' => ['auth','emailIsVerified']], function () {
-    Route::get('/route1', function () {
-        return 'route 1 gan ';
-    });
-});
-Route::group(['middleware' => ['auth','checkRole:admin','emailIsVerified']], function () {
-    Route::get('/route2', function () {
-        return 'route2 gan';
-    });
-});
-
-
+// Route::get('/',function(){
+//     return view('app');
+// });
+Route::get('/{any?}',function (){
+    return view('app');
+})->where('any','.*');
 
 
 
