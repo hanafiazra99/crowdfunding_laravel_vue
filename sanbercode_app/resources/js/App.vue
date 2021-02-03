@@ -14,7 +14,7 @@
                 </v-list-item>
 
                 <div class="pa-2" v-if="guest">
-                    <v-btn block color="primary" class="mb-1">
+                    <v-btn block @click="login()" color="primary" class="mb-1">
                          <v-icon color="" left>mdi-lock</v-icon>
                          Login
                     </v-btn>
@@ -24,7 +24,7 @@
                     </v-btn>
                 </div>
 
-                <v-devider></v-devider>
+                <v-divider></v-divider>
 
                 <v-list-item
                     v-for="(item,index) in menus"
@@ -34,7 +34,6 @@
 
                     <v-list-item-icon>
                          <v-icon color="" left> {{item.icon}}</v-icon>
-
                     </v-list-item-icon>
 
                     <v-list-item-content>
@@ -44,7 +43,7 @@
             </v-list>
             <template v-slot:append v-if="!guest">
                 <div class="pa-2">
-                    <v-btn color="red" dark>
+                    <v-btn @click="logout()" block color="red" dark>
                          <v-icon left>mdi-lock</v-icon>
                          Logout
                     </v-btn>
@@ -54,8 +53,51 @@
 
         </v-navigation-drawer>
 
-        <v-app-bar app>
-            App Slur
+        <v-app-bar app color="success" dark v-if="isHome">
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+            <v-toolbar-title>Crowdfunding APP</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn icon>
+                <v-badge color="orange" overlap>
+                    <template v-slot:badge>
+                        <span>{{ transactions }}</span>
+                    </template>
+                    <v-icon>mdi-cash-multiple</v-icon>
+                </v-badge>
+            </v-btn>
+            <v-text-field
+                slot="extension"
+                hide-details="true"
+                append-icon="mdi-microphone"
+                flat
+                label="search"
+                prepend-inner-icon="mdi-magnify"
+                solo-inverted
+
+            ></v-text-field>
+
+
+
+        </v-app-bar>
+        <v-app-bar app color="success" dark v-else>
+                <v-btn icon @click.stop="$router.go(-1)">
+                    <v-icon>mdi-arrow-left-circle</v-icon>
+                </v-btn>
+
+
+            <v-spacer></v-spacer>
+            <v-btn icon>
+                <v-badge color="orange" overlap v-if="transaction>0">
+                    <template v-slot:badge>
+                        <span>{{ transactions }}</span>
+                    </template>
+                    <v-icon>mdi-cash-multiple</v-icon>
+                </v-badge>
+                <v-badge color="orange" overlap v-else>
+
+                    <v-icon>mdi-cash-multiple</v-icon>
+                </v-badge>
+            </v-btn>
         </v-app-bar>
 
         <!-- Sizes your content based upon application components -->
@@ -75,15 +117,36 @@
 </template>
 
 <script>
+    import {mapGetters} from 'vuex'
     export default {
         name:'App',
         data:()=>   ({
-            drawer:true,
+            drawer:false,
             menus:[
                 {title:'Home',icon:'mdi-home',route:'/'},
-                {title:'Campaigns',icon:'mdi-hand-heart',route:'/campaigns'},
+                {title:'Donations',icon:'mdi-hand-heart',route:'/donations'},
             ],
-            guest:false
-        })
+            guest:false,
+
+        }),
+        methods:{
+            logout:function () {
+                this.guest = true
+            },
+            login:function (){
+                this.guest = false
+            }
+        },
+        computed:{
+            isHome(){
+                return (this.$route.path==='/' || this.$route.path==='/home')
+            },
+            ...mapGetters({
+                'transactions':'transaction/transactions'
+            }),
+            // transaction (){
+            //     return this.$store.getters.transaction
+            // }
+        }
     }
 </script>

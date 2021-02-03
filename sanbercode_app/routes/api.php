@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BlogController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,4 +28,15 @@ Route::group(['prefix'=>'auth'],function (){
     Route::middleware(['auth:api','emailIsVerified'])->get('/user', function () {
         return auth()->user();
     });
+});
+
+Route::group(['middleware' => ['api'],'prefix'=>'campaign'], function () {
+    Route::get('random/{count}',[CampaignController::class,'random']);
+    Route::post('store',[CampaignController::class,'store']);
+    Route::get('/',[CampaignController::class,'index']);
+    Route::get('/{id}',[CampaignController::class,'show']);
+});
+Route::group(['middleware' => ['api'],'prefix'=>'blog'], function () {
+    Route::get('random/{count}',[BlogController::class,'random']);
+    Route::post('store',[BlogController::class,'store']);
 });
