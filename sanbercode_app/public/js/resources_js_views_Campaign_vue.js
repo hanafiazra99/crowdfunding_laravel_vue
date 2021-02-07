@@ -75,12 +75,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   created: function created() {
     this.go();
   },
-  methods: _objectSpread({
+  methods: _objectSpread(_objectSpread(_objectSpread({
     go: function go() {
       var _this = this;
 
       var id = this.$route.params.id;
-      var url = '/api/campaign' + id;
+      var url = '/api/campaign/' + id;
       axios.get(url).then(function (response) {
         var data = response.data.data;
         _this.campaign = data.campaign;
@@ -90,8 +90,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     }
   }, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapMutations)({
-    'donate': 'insert'
-  }))
+    'tambahTransaksi': 'transaction/insert'
+  })), (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)({
+    setAlert: 'alert/set'
+  })), {}, {
+    donate: function donate() {
+      this.tambahTransaksi();
+      this.setAlert({
+        status: true,
+        color: "success",
+        text: 'Transaksi berhasil di tambah'
+      });
+    }
+  })
 });
 
 /***/ }),

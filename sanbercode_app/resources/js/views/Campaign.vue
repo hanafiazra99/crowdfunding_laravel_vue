@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
+import {mapActions, mapMutations} from 'vuex'
 export default {
     data:()=>({
         campaign:{},
@@ -57,7 +57,7 @@ export default {
     methods:{
         go(){
             let {id} = this.$route.params
-            let url = '/api/campaign'+id
+            let url = '/api/campaign/'+id
             axios.get(url).then((response)=>{
                 let {data} = response.data
                 this.campaign = data.campaign
@@ -68,11 +68,20 @@ export default {
             })
         },
         ...mapMutations({
-            'donate':'insert'
+            'tambahTransaksi':'transaction/insert',
+
         }),
-        // donate(){
-        //     this.$store.commit('insert')
-        // }
+        ...mapActions({
+            setAlert:'alert/set'
+        }),
+        donate(){
+            this.tambahTransaksi()
+            this.setAlert({
+                status:true,
+                color:"success",
+                text:'Transaksi berhasil di tambah'
+            })
+        }
     }
 }
 </script>

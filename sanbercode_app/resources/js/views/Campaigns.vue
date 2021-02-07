@@ -19,7 +19,9 @@
     </div>
 </template>
 <script>
+import CampaignItem from '../components/CampaignItem.vue'
     export default {
+  components: { CampaignItem },
         data: ()=>({
             campaigns:[],
             page:0,

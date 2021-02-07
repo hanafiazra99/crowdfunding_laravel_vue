@@ -17,6 +17,16 @@ class CampaignController extends Controller
                                  'data'=>$data
                                 ],200);
     }
+    public function search($keyword){
+        $campaigns = Campaign::select('*')->where('title',"LIKE","%".$keyword."%")->get();
+
+        $data['campaigns'] = $campaigns;
+
+        return response()->json(['response_code'=>'00',
+                                 'response_message'=>'Data Berhasil di load',
+                                 'data'=>$data
+                                ],200);
+    }
     public function show($id){
         $campaign = Campaign::find($id);
 
@@ -43,7 +53,7 @@ class CampaignController extends Controller
     public function store(Request $request){
         $request->validate([
             'title'=>'required',
-            'desciption'=>'required',
+            'description'=>'required',
             'image'=>'required|mimes:jpg,jpeg,png'
         ]);
 
@@ -73,7 +83,7 @@ class CampaignController extends Controller
             $data['campaign'] = $campaign;
         }
         return response()->json(['response_code'=>'00',
-                                 'response_message'=>'Data Berhasil di load',
+                                 'response_message'=>'Data Berhasil di upload',
                                  'data'=>$data
                                 ],200);
     }

@@ -9,10 +9,8 @@
             <v-card-actions>
                 <v-progress-linear
                     v-model="progress"
-                    color="blue-gray"
-                    height="7"
                 >
-
+                
                 </v-progress-linear>
             </v-card-actions>
 

@@ -1,5 +1,12 @@
 <template>
     <v-app>
+        <alert></alert>
+        <keep-alive>
+            <v-dialog v-model="dialog" fullscreen hide-overlay persistent transition="dialog-botton-transition">
+                <search :is="currentComponent" @closed="setDialogStatus" />
+            </v-dialog>
+        </keep-alive>
+
         <v-navigation-drawer app v-model="drawer">
             <v-list>
                 <v-list-item v-if="!guest">
@@ -8,13 +15,13 @@
                     </v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-title>
-                            John Leider
+                            {{ user.user.name }}
                         </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
 
                 <div class="pa-2" v-if="guest">
-                    <v-btn block @click="login()" color="primary" class="mb-1">
+                    <v-btn block @click="setDialogComponent('login')" color="primary" class="mb-1">
                          <v-icon color="" left>mdi-lock</v-icon>
                          Login
                     </v-btn>
@@ -58,13 +65,16 @@
             <v-toolbar-title>Crowdfunding APP</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon>
-                <v-badge color="orange" overlap>
+                <v-badge color="orange" overlap v-if="transactions > 0">
                     <template v-slot:badge>
                         <span>{{ transactions }}</span>
                     </template>
                     <v-icon>mdi-cash-multiple</v-icon>
                 </v-badge>
+                <v-icon v-else>mdi-cash-multiple</v-icon>
+
             </v-btn>
+
             <v-text-field
                 slot="extension"
                 hide-details="true"
@@ -73,8 +83,11 @@
                 label="search"
                 prepend-inner-icon="mdi-magnify"
                 solo-inverted
+                @click="setDialogComponent('search')"
+            >
 
-            ></v-text-field>
+            </v-text-field>
+
 
 
 
@@ -87,7 +100,7 @@
 
             <v-spacer></v-spacer>
             <v-btn icon>
-                <v-badge color="orange" overlap v-if="transaction>0">
+                <v-badge color="orange" overlap v-if="transactions > 0">
                     <template v-slot:badge>
                         <span>{{ transactions }}</span>
                     </template>
@@ -110,15 +123,25 @@
             <router-view></router-view>
             </v-container>
         </v-main>
-        <v-footer app>
-            footer slur
+        <v-footer padless>
+            <v-col
+            class="text-center"
+            cols="12"
+            >
+            {{ new Date().getFullYear() }} — <strong>NupTzy</strong>
+            </v-col>
         </v-footer>
     </v-app>
 </template>
 
 <script>
-    import {mapGetters} from 'vuex'
+    import {mapActions, mapGetters} from 'vuex'
+    import Alert from './components/Alert.vue'
+    import Search from './components/Search.vue'
+    import Login from './components/Login.vue'
+
     export default {
+    components: { Alert, Search,Login},
         name:'App',
         data:()=>   ({
             drawer:false,
@@ -126,27 +149,74 @@
                 {title:'Home',icon:'mdi-home',route:'/'},
                 {title:'Donations',icon:'mdi-hand-heart',route:'/donations'},
             ],
-            guest:false,
-
         }),
         methods:{
-            logout:function () {
-                this.guest = true
+            logout () {
+                console.log(this.user.token)
+                let config = {
+                    'headers' : {
+                        'Authorization' : 'Bearer ' + this.user.token,
+                    }
+                }
+                axios.get('/api/auth/logout',config)
+                    .then((response) => {
+                        this.setAuth({})
+                        this.setAlert({
+                            status:true,
+                            color:'success',
+                            text:'Berhasil Logout'
+                        })
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        this.setAlert({
+                            status:true,
+                            color:'success',
+                            text: 'ada error guys'
+                        })
+                    })
             },
-            login:function (){
-                this.guest = false
+            ...mapActions({
+                setDialogStatus : 'dialog/setStatus',
+                setDialogComponent : 'dialog/setComponent',
+                setAlert : 'alert/set',
+                setAuth : 'auth/set',
+                checkToken : 'auth/checkToken'
+
+            }),
+            closeDialog(value){
+                this.dialog = value
             }
+
         },
         computed:{
             isHome(){
                 return (this.$route.path==='/' || this.$route.path==='/home')
             },
             ...mapGetters({
-                'transactions':'transaction/transactions'
+                'transactions':'transaction/transactions',
+                'guest' : 'auth/guest',
+                'user' : 'auth/user',
+                'dialogStatus':'dialog/status',
+                'currentComponent':'dialog/component'
             }),
-            // transaction (){
-            //     return this.$store.getters.transaction
-            // }
+            dialog:{
+                get(){
+                    return this.dialogStatus
+                },
+                set(value){
+                    this.setDialogStatus(value)
+                }
+            }
+
+        },
+        mounted(){
+            console.log(this.user)
+            if(this.user){
+                this.checkToken(this.user)
+            }
         }
+
+
     }
 </script>

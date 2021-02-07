@@ -9,6 +9,7 @@
             <v-layout wrap>
                 <v-flex v-for="(campaign) in campaigns" :key="`category-`+campaign.id" xs6>
                     <campaign-item :campaign="campaign"></campaign-item>
+                    
                 </v-flex>
             </v-layout>
         </v-container>
@@ -18,6 +19,7 @@
                         All Campaigns <v-icon>mdi-chevron-right</v-icon>
                     </v-btn>
             </div>
+            
             <v-layout wrap>
                 <v-carousel hide-delimiters height="250px">
                     <v-carousel-item v-for="(blog) in blogs" :key="`category-`+blog.id">
@@ -39,9 +41,12 @@
 </template>
 
 <script>
+import CampaignItem from '../components/CampaignItem.vue'
     export default {
+    components: { CampaignItem },
         data:() => ({
-            campaigns:[]
+            campaigns:[],
+            blogs:[]
         }),
         created(){
             axios.get('api/campaign/random/2')
